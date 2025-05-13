@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\Order;
+use App\Models\Customer;
+use App\Models\Product;
 
 class OrderApiTest extends TestCase
 {
@@ -24,7 +26,11 @@ class OrderApiTest extends TestCase
         ]);
 
         $response->assertStatus(201)
-                 ->assertJsonFragment(['product' => 'Klavye']);
+                 ->assertJsonFragment([
+                    'status' => 'pending',
+                    'quantity' => 1,
+                    'product_id' => $product->id,
+                    'customer_id' => $customer->id]);
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
@@ -34,13 +40,21 @@ class OrderApiTest extends TestCase
         $product = Product::factory()->create();
 
         Order::factory()->create([
-            'product' => 'Ekran'
+            'customer_id' => $customer->id,
+            'product_id' => $product->id,
+            'quantity' => 3,
+            'status' => 'pending'
         ]);
 
         $response = $this->getJson('/api/orders');
 
         $response->assertStatus(200)
-                 ->assertJsonFragment(['product' => 'Ekran']);
+                 ->assertJsonFragment([
+                    'customer_id' => $customer->id,
+                    'product_id' => $product->id,
+                    'quantity' => 3,
+                    'status' => 'pending'
+                 ]);
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
@@ -50,6 +64,9 @@ class OrderApiTest extends TestCase
         $product = Product::factory()->create();
 
         $order = Order::factory()->create([
+            'customer_id' => $customer->id,
+            'product_id' => $product->id,
+            'quantity' => 3,
             'status' => 'pending'
         ]);
 
@@ -67,7 +84,10 @@ class OrderApiTest extends TestCase
         $customer = Customer::factory()->create();
         $product = Product::factory()->create();
 
-        $order = Order::factory()->create();
+        $order = Order::factory()->create([
+            'customer_id' => $customer->id,
+            'product_id' => $product->id,
+        ]);
 
         $response = $this->deleteJson("/api/orders/{$order->id}");
 
