@@ -10,6 +10,16 @@
         button { margin: 5px; padding: 5px 10px; }
         ul { list-style: none; padding: 0; }
         li { margin: 10px 0; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+        .status{
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        .status.pending { background: orange; color: white; }
+        .status.processing { background: blue; color: white; }
+        .status.completed { background: green; color: white; }
+        .status.cancelled { background: red; color: white; }
     </style>
 </head>
 <body>
@@ -39,12 +49,12 @@
                 $('#order-list').empty();
                 data.forEach(order => {
                     $('#order-list').append(`
-                        <li data-id="${order.id}">
-                            <strong>${order.customer_name}</strong> - ${order.product} (${order.quantity})
-                            <em>[${order.status}]</em>
-                            <button class="edit-btn">Güncelle</button>
-                            <button class="delete-btn">Sil</button>
-                        </li>
+                    <li data-id="${order.id}">
+                        <strong>${order.customer.name}</strong> - ${order.product.name} (${order.quantity})
+                        <span class="status ${order.status}">${order.status}</span>
+                        <button class="edit-btn">Güncelle</button>
+                        <button class="delete-btn">Sil</button>
+                    </li>
                     `);
                 });
             });
