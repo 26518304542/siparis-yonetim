@@ -23,7 +23,7 @@
     </style>
 </head>
 <body>
-    <h1>Tüm Siparişler (Ana Sayfa)</h1>
+    <h1>Sipariş Listesi</h1>
     <ul id="order-list"></ul>
 
     <h2 id="form-title">Yeni Sipariş Ekle</h2>
