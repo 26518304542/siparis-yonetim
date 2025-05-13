@@ -10,23 +10,29 @@ class OrderApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_creates_an_order()
     {
+        $customer = Customer::factory()->create();
+        $product = Product::factory()->create();
+
         $response = $this->postJson('/api/orders', [
-            'customer_name' => 'Test Müşteri',
-            'product' => 'Klavye',
+            'customer_id' => $customer->id,
+            'product_id' => $product->id,
             'quantity' => 1,
-            'status' => 'pending'
+            'status' => 'pending',
         ]);
 
         $response->assertStatus(201)
                  ->assertJsonFragment(['product' => 'Klavye']);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_lists_orders()
     {
+        $customer = Customer::factory()->create();
+        $product = Product::factory()->create();
+
         Order::factory()->create([
             'product' => 'Ekran'
         ]);
@@ -37,9 +43,12 @@ class OrderApiTest extends TestCase
                  ->assertJsonFragment(['product' => 'Ekran']);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_updates_an_order()
     {
+        $customer = Customer::factory()->create();
+        $product = Product::factory()->create();
+
         $order = Order::factory()->create([
             'status' => 'pending'
         ]);
@@ -52,9 +61,12 @@ class OrderApiTest extends TestCase
                  ->assertJsonFragment(['status' => 'completed']);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_deletes_an_order()
     {
+        $customer = Customer::factory()->create();
+        $product = Product::factory()->create();
+
         $order = Order::factory()->create();
 
         $response = $this->deleteJson("/api/orders/{$order->id}");
