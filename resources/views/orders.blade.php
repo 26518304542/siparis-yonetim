@@ -26,7 +26,7 @@
     <h1>Sipariş Listesi</h1>
     <ul id="order-list"></ul>
 
-    <h2 id="form-title">Sipariş Ekle / Güncelle</h2>
+    <h2 id="form-title">Sipariş Ekle ve/veya Güncelle</h2>
     <form id="order-form">
         <input type="hidden" id="edit_id">
 
